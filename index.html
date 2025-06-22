@@ -19,83 +19,27 @@
 
   <!-- INLINE NAV STYLING (retain teal background for nav titles) -->
   <style>
-    :root {
-      --brand-teal: #5A8785;
-    }
-
+    :root { --brand-teal: #5A8785; }
     /* ─── NAVIGATION BAR ───────────────────────────────────────────────────── */
-    #main-nav {
-      display: flex !important;
-      justify-content: space-between !important;
-      align-items: center !important;
-      width: 100% !important;
-      padding: 0.10rem 0.65rem !important;
-      margin: 0 !important;
-      box-sizing: border-box !important;
-
-      /* Solid teal background behind titles */
-      background-color: var(--brand-teal) !important;
-
-      /* Sit on top of underlying content */
-      position: relative !important;
-      z-index: 1000 !important;
-    }
-
-    #main-nav .nav-item {
-      flex: 1 !important;
-    }
-    #main-nav .nav-left {
-      text-align: left !important;
-    }
-    #main-nav .nav-center {
-      text-align: center !important;
-    }
-    #main-nav .nav-right {
-      display: flex !important;
-      justify-content: flex-end !important;
-      align-items: center !important;
-      text-align: right !important;
-      flex: 1 !important;
-    }
-
-    #main-nav a {
-      color: #fff !important;
-      font-family: 'Bebas Neue', sans-serif !important;
-      font-size: 2rem !important;
-      text-transform: uppercase !important;
-      text-decoration: none !important;
-      margin: 0 0.5rem !important;
-    }
-    #main-nav .social-icon {
-      margin-left: 0.5rem !important;
-      font-size: 1.2rem !important;
-      vertical-align: middle !important;
-      color: #fff !important;
-    }
+    #main-nav { display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; padding: 0.10rem 0.65rem !important; margin: 0 !important; box-sizing: border-box !important; background-color: var(--brand-teal) !important; position: relative !important; z-index: 1000 !important; }
+    #main-nav .nav-item { flex: 1 !important; }
+    #main-nav .nav-left { text-align: left !important; }
+    #main-nav .nav-center { text-align: center !important; }
+    #main-nav .nav-right { display: flex !important; justify-content: flex-end !important; align-items: center !important; text-align: right !important; flex: 1 !important; }
+    #main-nav a { color: #fff !important; font-family: 'Bebas Neue', sans-serif !important; font-size: 2rem !important; text-transform: uppercase !important; text-decoration: none !important; margin: 0 0.5rem !important; }
+    #main-nav .social-icon { margin-left: 0.5rem !important; font-size: 1.2rem !important; vertical-align: middle !important; color: #fff !important; }
 
     /* ─── MOBILE OVERRIDE ─────────────────────────────────────────────────── */
     @media (max-width: 768px) {
-      #main-nav {
-        flex-direction: row !important;
-        justify-content: space-between !important;
-        flex-wrap: nowrap !important;
-        padding: 0.115rem 0.5rem !important;
-      }
-      #main-nav .nav-item {
-        flex: 1 !important;
-        text-align: center !important;
-        margin: 0 !important;
-      }
-      #main-nav a {
-        font-size: 1rem !important;
-        margin: 0 0.25rem !important;
-      }
-      /* Hide social icons on mobile */
-      #main-nav .social-icon {
-        display: none !important;
-      }
+      #main-nav { flex-direction: row !important; justify-content: space-between !important; flex-wrap: nowrap !important; padding: 0.115rem 0.5rem !important; }
+      #main-nav .nav-item { flex: 1 !important; text-align: center !important; margin: 0 !important; }
+      #main-nav a { font-size: 1rem !important; margin: 0 0.25rem !important; }
+      #main-nav .social-icon { display: none !important; }
     }
   </style>
+
+  <!-- Chromecast Web Sender SDK -->
+  <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
 
   <!-- Other head scripts -->
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" defer></script>
@@ -113,28 +57,15 @@
   <header class="header-banner">
     <div class="header-gif-right"></div>
     <div class="header-gif-left"></div>
-
     <div class="logo-container">
-      <img
-        class="logo"
-        src="/images/logo.png"
-        alt="Cutters Choice Radio Logo"
-        loading="lazy"
-      >
+      <img class="logo" src="/images/logo.png" alt="Cutters Choice Radio Logo" loading="lazy">
     </div>
-
     <div class="title">
       <h1>Cutters Choice Radio</h1>
       <p class="tagline">The home of relentless flavas and significant bangers!</p>
     </div>
-
     <div class="logo-container">
-      <img
-        class="logo"
-        src="/images/logo.png"
-        alt="Cutters Choice Radio Logo"
-        loading="lazy"
-      >
+      <img class="logo" src="/images/logo.png" alt="Cutters Choice Radio Logo" loading="lazy">
     </div>
   </header>
 
@@ -151,12 +82,9 @@
     </div>
     <div class="nav-item nav-right">
       <a href="merch.html">MERCH</a>
-      <a href="https://facebook.com/cutterschoiceradio" target="_blank" class="social-icon">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="https://instagram.com/cutterschoiceradio" target="_blank" class="social-icon">
-        <i class="fab fa-instagram"></i>
-      </a>
+      <a href="https://facebook.com/cutterschoiceradio" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://instagram.com/cutterschoiceradio" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+      <google-cast-button></google-cast-button>
     </div>
   </nav>
 
@@ -168,49 +96,28 @@
     <!-- CHAT SECTION -->
     <section class="chat">
       <h2>Cutters Chat</h2>
-      <iframe
-        title="Cutters Choice Radio Chat"
-        src="https://app.radiocult.fm/embed/chat/cutters-choice-radio?theme=midnight&primaryColor=%235A8785&corners=sharp"
-        width="100%" height="700" frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        seamless>
-      </iframe>
-      <div class="chat-actions">
-        <button class="popout-btn" onclick="openChatPopup()">Pop Out Chat</button>
-      </div>
-      <div class="rc-user-list-container">
-        <div class="rc-user-list"></div>
-      </div>
+      <iframe title="Cutters Choice Radio Chat" src="https://app.radiocult.fm/embed/chat/cutters-choice-radio?theme=midnight&primaryColor=%235A8785&corners=sharp" width="100%" height="700" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" seamless></iframe>
+      <div class="chat-actions"><button class="popout-btn" onclick="openChatPopup()">Pop Out Chat</button></div>
+      <div class="rc-user-list-container"><div class="rc-user-list"></div></div>
     </section>
 
     <!-- LIVE PLAYER SECTION -->
     <section class="live-player">
       <h2 id="now-dj">Live Now</h2>
       <div class="player-container">
-        <iframe id="inlinePlayer"
-          title="Cutters Choice Radio player"
-          src="https://app.radiocult.fm/embed/square-player/cutters-choice-radio?theme=midnight&primaryColor=%235A8785&corners=sharp"
-          allow="autoplay" loading="lazy">
-        </iframe>
+        <iframe id="inlinePlayer" title="Cutters Choice Radio player" src="https://app.radiocult.fm/embed/square-player/cutters-choice-radio?theme=midnight&primaryColor=%235A8785&corners=sharp" allow="autoplay" loading="lazy"></iframe>
         <div id="now-archive">Loading archive show…</div>
         <button id="popOutBtn" class="popout-btn">Pop Out Player</button>
         <button id="chatPopupBtn" class="popout-btn chat-btn-mobile" onclick="openChatPopup()">Chat</button>
       </div>
       <h3>This Week’s Shows</h3>
-      <img
-        id="now-art"
-        src="https://i.imgur.com/EHhS47F.png"
-        alt="Current DJ Artwork"
-        loading="lazy"
-      >
+      <img id="now-art" src="https://i.imgur.com/EHhS47F.png" alt="Current DJ Artwork" loading="lazy">
     </section>
 
     <!-- SCHEDULE SECTION -->
     <section class="schedule">
       <h2 class="schedule-heading">This Week’s Lineup</h2>
-      <div class="schedule-scroll" id="schedule-container">
-        <p>Loading this week’s schedule…</p>
-      </div>
+      <div class="schedule-scroll" id="schedule-container"><p>Loading this week’s schedule…</p></div>
     </section>
 
     <!-- MIXCLOUD ARCHIVE SECTION -->
@@ -231,29 +138,48 @@
   <script src="script.js?v=1749627685287" defer></script>
   <script src="slideshow.js?v=1749627685287" defer></script>
 
-  <!-- GIF‐SWAP SCRIPT: alternates GIF sets every 2 animation loops -->
+  <!-- Chromecast initialization & handler -->
+  <script>
+    window.__onGCastApiAvailable = isAvailable => {
+      if (isAvailable) {
+        cast.framework.CastContext.getInstance().setOptions({
+          receiverApplicationId: '77E0F81B',
+          autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+        });
+      }
+    };
+    document.addEventListener('DOMContentLoaded', () => {
+      const castButton = document.querySelector('google-cast-button');
+      castButton.addEventListener('click', async () => {
+        const context = cast.framework.CastContext.getInstance();
+        const session = context.getCurrentSession();
+        if (!session) return console.warn('No Chromecast session');
+        const mediaInfo = new chrome.cast.media.MediaInfo('YOUR_STREAM_URL', 'application/x-mpegurl');
+        mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
+        mediaInfo.metadata.title = document.getElementById('now-dj').textContent;
+        mediaInfo.metadata.albumName = 'Cutters Choice Radio';
+        const request = new chrome.cast.media.LoadRequest(mediaInfo);
+        try { await session.loadMedia(request); console.log('Casting started'); }
+        catch (err) { console.error('Chromecast error:', err); }
+      });
+    });
+  </script>
+
+  <!-- GIF‐SWAP SCRIPT -->
   <script>
     (function(){
       const right = document.querySelector('.header-gif-right');
       const left  = document.querySelector('.header-gif-left');
       let loopCount = 0;
-      const set1 = [
-        "url('/images/Untitled%20design(4).gif')",
-        "url('/images/Untitled%20design(5).gif')"
-      ];
-      const set2 = [
-        "url('/images/Untitled%20design(7).gif')",
-        "url('/images/Untitled%20design(8).gif')"
-      ];
+      const set1 = ["url('/images/Untitled%20design(4).gif')","url('/images/Untitled%20design(5).gif')"];
+      const set2 = ["url('/images/Untitled%20design(7).gif')","url('/images/Untitled%20design(8).gif')"];
       let currentSet = set1;
-      right.style.backgroundImage = currentSet[0];
-      left.style.backgroundImage  = currentSet[1];
+      right.style.backgroundImage = currentSet[0]; left.style.backgroundImage = currentSet[1];
       right.addEventListener('animationiteration', () => {
         loopCount++;
         if (loopCount % 2 === 0) {
           currentSet = (currentSet === set1) ? set2 : set1;
-          right.style.backgroundImage = currentSet[0];
-          left.style.backgroundImage  = currentSet[1];
+          right.style.backgroundImage = currentSet[0]; left.style.backgroundImage = currentSet[1];
         }
       });
     })();
