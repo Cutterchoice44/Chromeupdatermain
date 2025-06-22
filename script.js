@@ -4,6 +4,7 @@ const STATION_ID        = "cutters-choice-radio";
 const BASE_URL          = "https://api.radiocult.fm/api";
 const FALLBACK_ART      = "/images/archives-logo.jpeg";
 const MIXCLOUD_PASSWORD = "cutters44";
+const STREAM_URL        = "https://cutters-choice-radio.radiocult.fm/stream";
 const isMobile          = /Mobi|Android/i.test(navigator.userAgent);
 
 let chatPopupWindow;
@@ -56,6 +57,16 @@ async function sendBan() {
 }
 window.sendBan = sendBan;
 
+// Chromecast Web Sender SDK Initialization
+window.__onGCastApiAvailable = isAvailable => {
+  if (isAvailable) {
+    cast.framework.CastContext.getInstance().setOptions({
+      receiverApplicationId: '77E0F81B',
+      autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+    });
+  }
+};
+
 // 3) HELPERS
 function createGoogleCalLink(title, startUtc, endUtc) {
   if (!startUtc || !endUtc) return "#";
@@ -70,9 +81,7 @@ function createGoogleCalLink(title, startUtc, endUtc) {
 }
 
 async function rcFetch(path) {
-  const res = await fetch(BASE_URL + path, {
-    headers: { "x-api-key": API_KEY }
-  });
+  const res = await fetch(BASE_URL + path, { headers: { "x-api-key": API_KEY } });
   if (!res.ok) throw new Error(`Fetch error ${res.status}`);
   return res.json();
 }
@@ -200,8 +209,7 @@ async function fetchWeeklySchedule() {
       return;
     }
     container.innerHTML = "";
-    const fmt = iso =>
-      new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+    const fmt = iso => new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
     const byDay = schedules.reduce((acc, ev) => {
       const day = new Date(ev.startDateUtc).toLocaleDateString("en-GB", {
         weekday: "long", day: "numeric", month: "short"
@@ -285,6 +293,24 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchNowPlayingArchive();
   loadArchives();
 
+  // Chromecast Cast button handler
+  const castButton = document.querySelector('google-cast-button');
+  if (castButton) {
+    castButton.addEventListener('click', async () => {
+      const context = cast.framework.CastContext.getInstance();
+      const session = context.getCurrentSession();
+      if (!session) return console.warn('No Chromecast session');
+      const mediaInfo = new chrome.cast.media.MediaInfo(STREAM_URL, 'application/x-mpegurl');
+      mediaInfo.streamType = chrome.cast.media.StreamType.LIVE;
+      mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
+      mediaInfo.metadata.title = document.getElementById('now-dj').textContent;
+      mediaInfo.metadata.albumName = 'Cutters Choice Radio';
+      const request = new chrome.cast.media.LoadRequest(mediaInfo);
+      try { await session.loadMedia(request); console.log('Casting started'); }
+      catch (err) { console.error('Chromecast error:', err); }
+    });
+  }
+
   // remove old chat-actions on mobile
   if (window.matchMedia("(max-width: 768px)").matches) {
     document.querySelectorAll("section.chat .chat-actions").forEach(el=>el.remove());
@@ -303,8 +329,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("popOutBtn")?.addEventListener("click",()=>{
     const src=document.getElementById("inlinePlayer").src;
     const w=window.open("","CCRPlayer","width=400,height=200,resizable=yes");
-    w.document.write(`
-      <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cutters Choice Player</title><style>body{margin:0;background:#111;display:flex;align-items:center;justify-content:center;height:100vh}iframe{width:100%;height:180px;border:none;border-radius:4px}</style></head><body><iframe src="${src}" allow="autoplay"></iframe></body></html>`);
+    w.document.write(
+      `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cutters Choice Player</title><style>body{margin:0;background:#111;display:flex;align-items:center;justify-content:center;height:100vh}iframe{width:100%;height:180px;border:none;border-radius:4px}</style></head><body><iframe src="${src}" allow="autoplay"></iframe></body></html>`);
     w.document.close();
   });
 
