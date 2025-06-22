@@ -127,7 +127,7 @@ header .title .tagline {
   border-top:    2px solid #000 !important;
   border-bottom: 2px solid #000 !important;
 
-  z-index: 1000 !important; /* keep nav on top of other content */
+  z-index: 1000 !important;
 }
 
 /* ③ Ensure link text sits on top of the teal background: */
@@ -140,6 +140,16 @@ header .title .tagline {
   font-size: 2rem !important;
   text-transform: uppercase !important;
   text-decoration: none !important;
+}
+
+/* ─── CHROMECAST BUTTON STYLING ────────────────────────────────────────── */
+google-cast-button {
+  --icon-color: #fff;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 /* ─── GRID LAYOUT ─────────────────────────────────────────────────── */
@@ -216,7 +226,7 @@ section h2::after {
   cursor: pointer;
 }
 
-/* ─── LIVE PLAYER ───────────────────────────────────────────────── */
+/* ─── LIVE PLAYER ─────────────────├─────────────────────────────────── */
 .live-player {
   background: #000;
   border: 2px solid var(--brand-teal);
