@@ -150,14 +150,13 @@
     </section>
 
     <!-- LIVE PLAYER SECTION -->
-    <section class="live-player">
-      <h2 id="now-dj">Live Now</h2>
-      <div class="player-container">
-        <iframe id="inlinePlayer"
-                title="Cutters Choice Radio player"
-                src="https://app.radiocult.fm/embed/square-player/cutters-choice-radio?theme=midnight&primaryColor=%235A8785&corners=sharp"
-                allow="autoplay" loading="lazy">
-        </iframe>
+  + <iframe
++     id="inlinePlayer"
++     title="Cutters Choice Radio player"
++     src="https://app.radiocult.fm/embed/square-player/cutters-choice-radio?theme=midnight&primaryColor=%235A8785&corners=sharp"
++     allow="autoplay; encrypted-media"
++     loading="lazy">
++ </iframe>
         <div id="now-archive">Loading archive show…</div>
         <button id="popOutBtn" class="popout-btn">Pop Out Player</button>
         <button id="chatPopupBtn" class="popout-btn chat-btn-mobile" onclick="openChatPopup()">Chat</button>
