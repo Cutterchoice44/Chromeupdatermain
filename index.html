@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Allow encrypted media for Cast -->
+  <meta http-equiv="Permissions-Policy" content="encrypted-media=(self)">
   <!-- Prevent browser caching -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -150,28 +152,28 @@
     </section>
 
     <!-- LIVE PLAYER SECTION -->
-<section class="live-player">
-  <h2 id="now-dj">Live Now</h2>
-  <div class="player-container">
-    <iframe
-      id="inlinePlayer"
-      title="Cutters Choice Radio player"
-      src="https://app.radiocult.fm/embed/square-player/cutters-choice-radio?theme=midnight&primaryColor=%235A8785&corners=sharp"
-      allow="autoplay; encrypted-media"
-      loading="lazy"
-    ></iframe>
-    <div id="now-archive">Loading archive show…</div>
-    <button id="popOutBtn" class="popout-btn">Pop Out Player</button>
-    <button id="chatPopupBtn" class="popout-btn chat-btn-mobile" onclick="openChatPopup()">Chat</button>
-  </div>
-  <h3>This Week’s Shows</h3>
-  <img
-    id="now-art"
-    src="https://i.imgur.com/EHhS47F.png"
-    alt="Current DJ Artwork"
-    loading="lazy"
-  >
-</section>
+    <section class="live-player">
+      <h2 id="now-dj">Live Now</h2>
+      <div class="player-container">
+        <iframe
+          id="inlinePlayer"
+          title="Cutters Choice Radio player"
+          src="https://app.radiocult.fm/embed/square-player/cutters-choice-radio?theme=midnight&primaryColor=%235A8785&corners=sharp"
+          allow="autoplay; encrypted-media"
+          loading="lazy"
+        ></iframe>
+        <div id="now-archive">Loading archive show…</div>
+        <button id="popOutBtn" class="popout-btn">Pop Out Player</button>
+        <button id="chatPopupBtn" class="popout-btn chat-btn-mobile" onclick="openChatPopup()">Chat</button>
+      </div>
+      <h3>This Week’s Shows</h3>
+      <img
+        id="now-art"
+        src="https://i.imgur.com/EHhS47F.png"
+        alt="Current DJ Artwork"
+        loading="lazy"
+      >
+    </section>
 
     <!-- SCHEDULE SECTION -->
     <section class="schedule">
