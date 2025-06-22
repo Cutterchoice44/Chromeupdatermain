@@ -1,16 +1,16 @@
 // 1) GLOBAL CONFIG & MOBILE DETECTION
-const API_KEY           = "pk_YOUR_ACTUAL_KEY_HERE";
+const API_KEY           = "pk_0b8abc6f834b444f949f727e88a728e0";              // ← Replace with your actual Radiocult API key
 const STATION_ID        = "cutters-choice-radio";
 const BASE_URL          = "https://api.radiocult.fm/api";
 const FALLBACK_ART      = "/images/archives-logo.jpeg";
 const MIXCLOUD_PASSWORD = "cutters44";
-const STREAM_URL        = "https://cutters-choice-radio.radiocult.fm/stream";
+const STREAM_URL        = "https://cutters-choice-radio.radiocult.fm/stream";  // HLS stream URL
 const isMobile          = /Mobi|Android/i.test(navigator.userAgent);
 
 let chatPopupWindow;
 let visitorId;
 
-// ADMIN-MODE TOGGLE (show remove links when URL has “#admin”)
+// ADMIN-MODE TOGGLE (URL hash #admin)
 if (window.location.hash === "#admin") {
   document.body.classList.add("admin-mode");
 }
@@ -57,17 +57,17 @@ async function sendBan() {
 }
 window.sendBan = sendBan;
 
-// Chromecast Web Sender SDK Initialization
+// 3) Chromecast Web Sender SDK Initialization
 window.__onGCastApiAvailable = isAvailable => {
   if (isAvailable) {
     cast.framework.CastContext.getInstance().setOptions({
-      receiverApplicationId: '77E0F81B',
+      receiverApplicationId: '77E0F81B',                // ← Your Cast App ID
       autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
     });
   }
 };
 
-// 3) HELPERS
+// 4) HELPERS
 function createGoogleCalLink(title, startUtc, endUtc) {
   if (!startUtc || !endUtc) return "#";
   const fmt = dt => new Date(dt).toISOString().replace(/[-:]|\.\d{3}/g, "");
@@ -89,7 +89,7 @@ async function rcFetch(path) {
 function shuffleIframesDaily() {
   const container = document.getElementById("mixcloud-list");
   if (!container) return;
-  const HOUR = 60 * 60 * 1000;
+  const HOUR = 3600000;
   const last = +localStorage.getItem("lastShuffleTime");
   if (last && Date.now() - last < HOUR) return;
 
@@ -102,7 +102,7 @@ function shuffleIframesDaily() {
   localStorage.setItem("lastShuffleTime", Date.now());
 }
 
-// 4) MIXCLOUD ARCHIVES
+// 5) MIXCLOUD ARCHIVES
 async function loadArchives() {
   try {
     const res = await fetch("get_archives.php");
@@ -179,13 +179,12 @@ async function deleteMixcloud(index) {
   }
 }
 
-// 5) DATA FETCHERS
+// 6) DATA FETCHERS
 async function fetchLiveNow() {
   try {
     const { result } = await rcFetch(`/station/${STATION_ID}/schedule/live`);
     const { metadata: md = {}, content: ct = {} } = result;
-    document.getElementById("now-dj").textContent =
-      md.artist ? `${md.artist} – ${md.title}` : ct.title || "No live show";
+    document.getElementById("now-dj").textContent = md.artist ? `${md.artist} – ${md.title}` : ct.title || "No live show";
     document.getElementById("now-art").src = md.artwork_url || FALLBACK_ART;
   } catch (e) {
     console.error("Live fetch error:", e);
@@ -211,13 +210,11 @@ async function fetchWeeklySchedule() {
     container.innerHTML = "";
     const fmt = iso => new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
     const byDay = schedules.reduce((acc, ev) => {
-      const day = new Date(ev.startDateUtc).toLocaleDateString("en-GB", {
-        weekday: "long", day: "numeric", month: "short"
-      });
+      const day = new Date(ev.startDateUtc).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "short" });
       (acc[day] = acc[day] || []).push(ev);
       return acc;
     }, {});
-    for (const [day, evs] of Object.entries(byDay)) {
+    Object.entries(byDay).forEach(([day, evs]) => {
       const h3 = document.createElement("h3"); h3.textContent = day;
       container.appendChild(h3);
       const ul = document.createElement("ul"); ul.style.listStyle = "none"; ul.style.padding = "0";
@@ -227,16 +224,14 @@ async function fetchWeeklySchedule() {
         const t = document.createElement("strong"); t.textContent = `${fmt(ev.startDateUtc)}–${fmt(ev.endDateUtc)}`; wrap.appendChild(t);
         const artUrl = ev.metadata?.artwork?.default || ev.metadata?.artwork?.original;
         if (artUrl) {
-          const img = document.createElement("img");
-          img.src = artUrl; img.alt = `${ev.title} artwork`;
-          img.style.cssText = "width:30px;height:30px;object-fit:cover;border-radius:3px;";
-          wrap.appendChild(img);
+          const img = document.createElement("img"); img.src = artUrl; img.alt = `${ev.title} artwork`;
+          img.style.cssText = "width:30px;height:30px;object-fit:cover;border-radius:3px;"; wrap.appendChild(img);
         }
         const span = document.createElement("span"); span.textContent = ev.title; wrap.appendChild(span);
         li.appendChild(wrap); ul.appendChild(li);
       });
       container.appendChild(ul);
-    }
+    });
   } catch (e) {
     console.error("Schedule error:", e);
     document.getElementById("schedule-container").innerHTML = "<p>Error loading schedule.</p>";
@@ -260,7 +255,7 @@ async function fetchNowPlayingArchive() {
   }
 }
 
-// 6) ADMIN & UI ACTIONS (simplified)
+// 7) ADMIN & UI ACTIONS
 function openChatPopup() {
   const url = `https://app.radiocult.fm/embed/chat/${STATION_ID}?theme=midnight&primaryColor=%235A8785&corners=sharp`;
   if (isMobile) window.open(url, "CuttersChatMobile", "noopener");
@@ -268,25 +263,28 @@ function openChatPopup() {
   else chatPopupWindow = window.open(url, "CuttersChatPopup", "width=400,height=700,resizable=yes,scrollbars=yes");
 }
 
-function closeChatModal() {}
-
-// 7) BANNER GIF ROTATION
+// 8) BANNER GIF ROTATION
 const rightEl = document.querySelector(".header-gif-right");
-const leftEl  = document.querySelector(".header-gif-left");
+const leftEl = document.querySelector(".header-gif-left");
 if (rightEl && leftEl) {
   const sets = [
     { right: "/images/Untitled design(4).gif", left: "/images/Untitled design(5).gif" },
     { right: "/images/Untitled design(7).gif", left: "/images/Untitled design(8).gif" }
   ];
-  let current=0, sweepCount=0;
-  const speedMs = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--gif-speed").replace("s",""))||12)*1000;
+  let current = 0, sweepCount = 0;
+  const speedMs = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--gif-speed").replace("s", "")) || 12) * 1000;
   setInterval(() => {
     sweepCount++;
-    if (sweepCount>=2) { current=(current+1)%sets.length; rightEl.style.backgroundImage=`url('${sets[current].right}')`; leftEl.style.backgroundImage=`url('${sets[current].left}')`; sweepCount=0; }
+    if (sweepCount >= 2) {
+      current = (current + 1) % sets.length;
+      rightEl.style.backgroundImage = `url('${sets[current].right}')`;
+      leftEl.style.backgroundImage = `url('${sets[current].left}')`;
+      sweepCount = 0;
+    }
   }, speedMs);
 }
 
-// 8) INITIALIZATION
+// 9) INITIALIZATION
 document.addEventListener("DOMContentLoaded", () => {
   fetchLiveNow();
   fetchWeeklySchedule();
@@ -311,32 +309,47 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // remove old chat-actions on mobile
+  // Cleanup & auto-refresh
   if (window.matchMedia("(max-width: 768px)").matches) {
-    document.querySelectorAll("section.chat .chat-actions").forEach(el=>el.remove());
+    document.querySelectorAll("section.chat .chat-actions").forEach(el => el.remove());
   }
-
-  // auto-refresh live/archive
-  setInterval(fetchLiveNow,30000);
-  setInterval(fetchNowPlayingArchive,30000);
+  setInterval(fetchLiveNow, 30000);
+  setInterval(fetchNowPlayingArchive, 30000);
 
   if (isMobile) document.querySelector(".mixcloud")?.remove();
 
-  // inject mixcloud widget
-  const mcScript=document.createElement("script"); mcScript.src="https://widget.mixcloud.com/widget.js"; mcScript.async=true; document.body.appendChild(mcScript);
+  // Inject Mixcloud widget script
+  const mcScript = document.createElement("script");
+  mcScript.src = "https://widget.mixcloud.com/widget.js";
+  mcScript.async = true;
+  document.body.appendChild(mcScript);
 
-  // pop-out player
-  document.getElementById("popOutBtn")?.addEventListener("click",()=>{
-    const src=document.getElementById("inlinePlayer").src;
-    const w=window.open("","CCRPlayer","width=400,height=200,resizable=yes");
-    w.document.write(
-      `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cutters Choice Player</title><style>body{margin:0;background:#111;display:flex;align-items:center;justify-content:center;height:100vh}iframe{width:100%;height:180px;border:none;border-radius:4px}</style></head><body><iframe src="${src}" allow="autoplay"></iframe></body></html>`);
+  // Pop-out player
+  document.getElementById("popOutBtn")?.addEventListener("click", () => {
+    const src = document.getElementById("inlinePlayer").src;
+    const w = window.open("", "CCRPlayer", "width=400,height=200,resizable=yes");
+    w.document.write(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>Cutters Choice Player</title>
+      <style>body{margin:0;background:#111;display:flex;align-items:center;justify-content:center;height:100vh}iframe{width:100%;height:180px;border:none;border-radius:4px}</style>
+      </head>
+      <body><iframe src="${src}" allow="autoplay"></iframe></body>
+      </html>
+    `);
     w.document.close();
   });
 
-  // clean up chat ghosts
-  const ul=document.querySelector(".rc-user-list"); if(ul){ new MutationObserver(()=>{ ul.querySelectorAll("li").forEach(li=>{ if(!li.textContent.trim()) li.remove(); }); }).observe(ul,{childList:true}); }
+  // Chat ghost cleanup
+  const ul = document.querySelector(".rc-user-list");
+  if (ul) {
+    new MutationObserver(() => {
+      ul.querySelectorAll("li").forEach(li => { if (!li.textContent.trim()) li.remove(); });
+    }).observe(ul, { childList: true });
+  }
 
-  // ban check
-  if("requestIdleCallback" in window) requestIdleCallback(initBanCheck,{timeout:2000}); else setTimeout(initBanCheck,2000);
+  // Ban check timing
+  if ("requestIdleCallback" in window) requestIdleCallback(initBanCheck, { timeout: 2000 });
+  else setTimeout(initBanCheck, 2000);
 });
